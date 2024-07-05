@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ADMail"
         mc:Ignorable="d"
         Title="ADMail" MaxHeight="500" MaxWidth="800" 
-        MinHeight="500" MinWidth="800" Height="500" Width="800"
+        MinHeight="700" MinWidth="800" Height="700" Width="800"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
@@ -48,18 +48,23 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Version 0.0.0" x:Name="VersionLbl" VerticalAlignment="Center" Margin="0,3,0,0"/>
                     <Separator Margin="8,0,0,0"/>
-                    <ui:HyperlinkButton NavigateUri="https://github.com/valnoxy/GoAwayEdge" VerticalContentAlignment="Bottom" Content="GitHub" Margin="3,0,0,0" Height="30"/>
+                    <ui:HyperlinkButton NavigateUri="https://github.com/Wolkenhof/ADMail" VerticalContentAlignment="Bottom" Content="GitHub" Margin="3,0,0,0" Height="30"/>
                 </StackPanel>
             </StatusBarItem>
 
             <StatusBarItem Grid.Column="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <ui:Button Icon="{ui:SymbolIcon ArrowLeft16}" Content="{DynamicResource Back}" Margin="0,0,5,0" x:Name="BackBtn" IsEnabled="false"/>
-                    <ui:Button Icon="{ui:SymbolIcon ArrowRight16}" Content="{DynamicResource Next}" Margin="0,0,5,0" x:Name="NextBtn" IsEnabled="false"/>
+                    <ui:Button Icon="{ui:SymbolIcon ShieldDismiss24}"
+                               Appearance="Danger"
+                               Content="Break Debugger"
+                               Margin="0,0,5,0"
+                               Click="Debugger_OnClick" 
+                               x:Name="DebuggerBtn"
+                               Visibility="Collapsed"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>
 
-        <ui:TitleBar x:Name="Bar" Title="ADMail" Grid.Row="0" ShowMaximize="false"/>
+        <ui:TitleBar x:Name="Bar" Title="ADMail" Grid.Row="0" ShowMaximize="false" Icon="pack://application:,,,/bucker v3.ico"/>
     </Grid>
 </ui:FluentWindow>

@@ -21,7 +21,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\user.png" />
+	  <None Remove="bucker v3.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
 		<PackageReference Include="WPF-UI" Version="3.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Assets\user.png" />
+	  <Resource Include="bucker v3.ico" />
 	</ItemGroup>
 
 </Project>

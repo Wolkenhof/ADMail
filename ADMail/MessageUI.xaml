@@ -5,7 +5,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:local="clr-namespace:ADMail"
                  mc:Ignorable="d"
-                 Title="GoAwayEdge" MinHeight="200" MinWidth="700" MaxWidth="700"
+                 Title="ADMail" MinHeight="200" MinWidth="700" MaxWidth="700"
                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
                  Background="{ui:ThemeResource ApplicationBackgroundBrush}"
                  ExtendsContentIntoTitleBar="True"
@@ -60,7 +60,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Version 0.0.0" x:Name="VersionLbl" VerticalAlignment="Center" Margin="8,3,0,0"/>
                     <Separator Margin="8,0,0,0"/>
-                    <ui:HyperlinkButton NavigateUri="https://github.com/valnoxy/GoAwayEdge" VerticalContentAlignment="Bottom" Content="GitHub" Margin="3,0,0,0" Height="30"/>
+                    <ui:HyperlinkButton NavigateUri="https://github.com/Wolkenhof/ADMail" VerticalContentAlignment="Bottom" Content="GitHub" Margin="3,0,0,0" Height="30"/>
                 </StackPanel>
             </StatusBarItem>
 
