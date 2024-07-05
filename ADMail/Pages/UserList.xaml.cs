@@ -1,9 +1,7 @@
 ﻿using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Linq;
 
 namespace ADMail.Pages
 {
@@ -58,14 +56,18 @@ namespace ADMail.Pages
                     var de = result.GetUnderlyingObject() as DirectoryEntry;
                     
                     // Getting proxyAddresses
-                    var proxyAddrString = $"{de.Properties["proxyAddresses"].Value}";
+                    var proxyAddrString = de.Properties["proxyAddresses"];
                     var mailList = GetMailLists(proxyAddrString);
+                    
+                    var displayName = $"{de.Properties["displayName"].Value}";
+                    if (string.IsNullOrEmpty(displayName))
+                        displayName = $"{de.Properties["sAMAccountName"].Value}";
 
                     users.Add(new User()
                     {
                         Name = $"{de.Properties["givenName"].Value}",
                         LastName = $"{de.Properties["sn"].Value}",
-                        DisplayName = $"{de.Properties["displayName"].Value}",
+                        DisplayName = displayName,
                         Picture = $"pack://application:,,,/assets/user.png",
                         SAMAccountName = $"{de.Properties["sAMAccountName"].Value}",
                         MailList = mailList
@@ -77,26 +79,32 @@ namespace ADMail.Pages
             UserListView.ItemsSource = users;
         }
 
-        private static IEnumerable<MailList> GetMailLists(string proxyAddrString)
+        private static IEnumerable<MailList> GetMailLists(PropertyValueCollection proxyAddrString)
         {
             var mailList = new List<MailList>();
-            using var reader = new StringReader(proxyAddrString);
-            while (reader.ReadLine() is { } line)
+
+            for (var i = 0; i < proxyAddrString.Count; i++)
             {
-                if (line.StartsWith("SMTP:"))
+                var value = proxyAddrString[i]!.ToString();
+
+                if (value.StartsWith("SMTP:"))
+                {
                     mailList.Add(new MailList
                     {
                         isPrimary = true,
-                        Mail = line[4..]
+                        Mail = value[5..]
                     });
-                else if (line.StartsWith("smtp:"))
+                }
+                else if (value.StartsWith("smtp:"))
+                {
                     mailList.Add(new MailList
                     {
                         isPrimary = false,
-                        Mail = line[4..]
+                        Mail = value[5..]
                     });
+                }
             }
-
+            
             return mailList;
         }
 
