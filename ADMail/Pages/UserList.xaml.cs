@@ -87,7 +87,7 @@ namespace ADMail.Pages
             {
                 var value = proxyAddrString[i]!.ToString();
 
-                if (value.StartsWith("SMTP:"))
+                if (value!.StartsWith("SMTP:"))
                 {
                     mailList.Add(new MailList
                     {
@@ -112,6 +112,7 @@ namespace ADMail.Pages
         {
             // empty
         }
+
 
         #region Modules
 
