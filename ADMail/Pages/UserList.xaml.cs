@@ -2,6 +2,7 @@
 using System.DirectoryServices.AccountManagement;
 using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
 
 namespace ADMail.Pages
 {
@@ -68,7 +69,7 @@ namespace ADMail.Pages
                         Name = $"{de.Properties["givenName"].Value}",
                         LastName = $"{de.Properties["sn"].Value}",
                         DisplayName = displayName,
-                        Picture = $"pack://application:,,,/assets/user.png",
+                        Picture = "pack://application:,,,/assets/user.png",
                         SAMAccountName = $"{de.Properties["sAMAccountName"].Value}",
                         MailList = mailList
                     });
@@ -113,8 +114,15 @@ namespace ADMail.Pages
             // empty
         }
 
+        private void SearchBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) => FilterUsers(SearchBox.Text);
 
         #region Modules
+
+        private void FilterUsers(string searchText)
+        {
+            var filteredUsers = users.Where(user => user.DisplayName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            UserListView.ItemsSource = filteredUsers;
+        }
 
         private static bool ContainsAny(string s, List<string> substrings)
         {

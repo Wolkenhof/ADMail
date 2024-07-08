@@ -10,7 +10,7 @@
 
     <StackPanel>
         <ui:Card>
-            <ui:AutoSuggestBox Icon="{ui:SymbolIcon Search32}" PlaceholderText="Suchen" x:Name="SearchBox"/>
+            <ui:AutoSuggestBox Icon="{ui:SymbolIcon Search32}" TextChanged="SearchBox_OnTextChanged" PlaceholderText="Suchen" x:Name="SearchBox"/>
         </ui:Card>
 
         <ui:Card Margin="0,5,0,0">
@@ -22,17 +22,16 @@
                          Height="480">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="5,3,10,0" >
+                        <Grid Margin="5,3,10,3" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="45" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Image Grid.Column="0" x:Name="ImageIcon" Source="{Binding Picture}" Height="40"/>
-                            <TextBlock Grid.Column="1" x:Name="ImageName" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
-                            <TextBlock Grid.Column="2" x:Name="ImageFile" Text="{Binding SAMAccountName}" VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
-                            
+                            <Image Grid.Column="0" Source="{Binding Picture}" Height="40"/>
+                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
+                            <TextBlock Grid.Column="2" Text="{Binding SAMAccountName}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
