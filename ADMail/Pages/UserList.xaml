@@ -6,36 +6,43 @@
              xmlns:local="clr-namespace:ADMail.Pages"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="800">
 
-    <StackPanel>
+    <StackPanel Margin="6,0">
         <ui:Card>
             <ui:AutoSuggestBox Icon="{ui:SymbolIcon Search32}" TextChanged="SearchBox_OnTextChanged" PlaceholderText="Suchen" x:Name="SearchBox"/>
         </ui:Card>
 
         <ui:Card Margin="0,5,0,0">
-            <ui:ListView Name="UserListView" 
-                         Margin="-10"
-                         VerticalAlignment="Center"
-                         SelectionChanged="UserListView_Selected"
-                         ItemsSource="{Binding UsersList}" 
-                         Height="480">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="5,3,10,3" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="45" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+            <Grid>
+                <ui:ListView Name="UserListView" 
+                             Margin="-10"
+                             VerticalAlignment="Center"
+                             SelectionChanged="UserListView_Selected"
+                             ItemsSource="{Binding UsersList}"
+                             MouseDoubleClick="UserListView_OnMouseDoubleClick"
+                             Height="470">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="5,3,10,3" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="45" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Image Grid.Column="0" Source="{Binding Picture}" Height="40"/>
-                            <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
-                            <TextBlock Grid.Column="2" Text="{Binding SAMAccountName}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ui:ListView>
+                                <Image Grid.Column="0" Source="{Binding Picture}" Height="40"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
+                                <TextBlock Grid.Column="2" Text="{Binding SAMAccountName}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ui:ListView>
+                <StackPanel VerticalAlignment="Center" x:Name="LoadingScreen">
+                    <ui:ProgressRing Visibility="Visible" IsIndeterminate="True" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                    <ui:TextBlock Text="Lade AD Benutzer ..." FontTypography="Subtitle" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
         </ui:Card>
     </StackPanel>
 </UserControl>

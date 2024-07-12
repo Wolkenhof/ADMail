@@ -12,7 +12,6 @@ namespace ADMail
     /// </summary>
     public partial class MainWindow
     {
-        internal static MainWindow? ContentWindow;
         private static UserList? _userList;
 
         public MainWindow()
@@ -20,9 +19,6 @@ namespace ADMail
             InitializeComponent();
             VersionLbl.Content = $"Version {Assembly.GetExecutingAssembly().GetName().Version!}";
             _userList = new UserList();
-            FrameWindow.Content = _userList;
-            ContentWindow = this;
-
 #if DEBUG
             DebuggerBtn.Visibility = Visibility.Visible;
             TestWriteBtn.Visibility = Visibility.Visible;
@@ -55,6 +51,11 @@ namespace ADMail
                 }
             };
             ADManager.UpdateProxyAddresses("test123", a);
+        }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            RootNavigation.Navigate(typeof(Pages.ContentPage));
         }
     }
 }
