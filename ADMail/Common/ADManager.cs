@@ -6,7 +6,7 @@ namespace ADMail.Common
 {
     public class ADManager
     {
-        public static void UpdateProxyAddresses(string samAccountName, List<UserList.MailList> newProxyAddresses)
+        public static bool UpdateProxyAddresses(string samAccountName, List<UserList.MailList> newProxyAddresses)
         {
             try
             {
@@ -18,18 +18,28 @@ namespace ADMail.Common
                 {
                     if (result.GetUnderlyingObject() is DirectoryEntry de)
                     {
-                        de.Properties["proxyAddresses"].Clear();
+                        var currentProxyAddresses = de.Properties["proxyAddresses"];
+
+                        // Mark & delete old smtp-addresses
+                        var addressesToRemove = currentProxyAddresses.Cast<object?>().Where(address => address.ToString().StartsWith("SMTP:", StringComparison.OrdinalIgnoreCase)).ToList();
+                        foreach (var address in addressesToRemove)
+                        {
+                            currentProxyAddresses.Remove(address);
+                        }
+
+                        // Add new addresses
                         foreach (var address in newProxyAddresses)
                         {
-                            if (address.isPrimary)
-                                de.Properties["proxyAddresses"].Add($"SMTP:{address.Mail}");
-                            else
-                                de.Properties["proxyAddresses"].Add($"smtp:{address.Mail}");
+                            currentProxyAddresses.Add(address.isPrimary
+                                ? $"SMTP:{address.Mail}"
+                                : $"smtp:{address.Mail}");
                         }
+
                         de.CommitChanges();
                         var errorMessage = "Proxy Adressen wurden erfolgreich geändert!";
                         var messageUi = new MessageUi("ADMail", errorMessage, "OK");
                         messageUi.ShowDialog();
+                        return true;
                     }
                 }
                 else
@@ -37,6 +47,7 @@ namespace ADMail.Common
                     var errorMessage = "Benutzer nicht gefunden!";
                     var messageUi = new MessageUi("ADMail", errorMessage, "OK");
                     messageUi.ShowDialog();
+                    return false;
                 }
             }
             catch (Exception ex)
@@ -44,7 +55,9 @@ namespace ADMail.Common
                 var errorMessage = "Fehler: " + ex.Message;
                 var messageUi = new MessageUi("ADMail", errorMessage, "OK");
                 messageUi.ShowDialog();
+                return false;
             }
+            return false;
         }
     }
 }

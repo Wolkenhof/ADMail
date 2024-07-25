@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
+﻿using System.Collections.Concurrent;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Security.Principal;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,9 +9,6 @@ using Wpf.Ui.Controls;
 
 namespace ADMail.Pages
 {
-    /// <summary>
-    /// Interaktionslogik für UserList.xaml
-    /// </summary>
     public partial class UserList : UserControl
     {
         public class User
@@ -22,6 +18,7 @@ namespace ADMail.Pages
             public string DisplayName { get; set; }
             public string Picture { get; set; }
             public string SAMAccountName { get; set; }
+            public string SID { get; set; }
             public IEnumerable<MailList> MailList { get; set; }
         }
 
@@ -31,8 +28,8 @@ namespace ADMail.Pages
             public bool isPrimary { get; set; }
         }
 
-        public static List<User> users;
-        public List<User> UsersList => users;
+        public static ConcurrentBag<User>? users;
+        public List<User> UsersList => users.ToList();
 
         public UserList()
         {
@@ -43,7 +40,7 @@ namespace ADMail.Pages
 
         private async void LoadUsers()
         {
-            users = [];
+            users = new ConcurrentBag<User>();
             var names = new List<string>();
             LoadingScreen.Visibility = Visibility.Visible;
             UserListView.Visibility = Visibility.Hidden;
@@ -53,14 +50,17 @@ namespace ADMail.Pages
                 using (var context = new PrincipalContext(ContextType.Domain, deviceDomain))
                 {
                     using var searcher = new PrincipalSearcher(new UserPrincipal(context));
-                    var userPrincipal = new UserPrincipal(context);
-                    userPrincipal.Enabled = true;
+                    var userPrincipal = new UserPrincipal(context)
+                    {
+                        Enabled = true
+                    };
                     searcher.QueryFilter = userPrincipal;
                     var allUsers = searcher.FindAll();
 
                     foreach (var result in allUsers)
                     {
                         var de = result.GetUnderlyingObject() as DirectoryEntry;
+                        if (de == null) continue;
 
                         // Getting proxyAddresses
                         var proxyAddrString = de.Properties["proxyAddresses"];
@@ -71,25 +71,36 @@ namespace ADMail.Pages
                             displayName = $"{de.Properties["sAMAccountName"].Value}";
 
                         var samAccountName = $"{de.Properties["sAMAccountName"].Value}";
-                        if (users.All(u => u.SAMAccountName != samAccountName))
+                        var sidBytes = (byte[])de.Properties["objectSid"].Value!;
+                        var sid = new SecurityIdentifier(sidBytes, 0);
+                        var sidString = sid.ToString();
+
+                        var normalizedSamAccountName = samAccountName.Trim().ToLower();
+
+                        // Synchronized block to check and add user to avoid concurrent modifications
+                        lock (users)
                         {
-                            users.Add(new User()
+                            if (users.All(u => u.SAMAccountName.Trim().ToLower() != normalizedSamAccountName))
                             {
-                                Name = $"{de.Properties["givenName"].Value}",
-                                LastName = $"{de.Properties["sn"].Value}",
-                                DisplayName = displayName,
-                                Picture = "pack://application:,,,/assets/user.png",
-                                SAMAccountName = samAccountName,
-                                MailList = mailList
-                            });
+                                users.Add(new User()
+                                {
+                                    Name = $"{de.Properties["givenName"].Value}",
+                                    LastName = $"{de.Properties["sn"].Value}",
+                                    DisplayName = displayName,
+                                    Picture = "pack://application:,,,/assets/user.png",
+                                    SAMAccountName = samAccountName,
+                                    MailList = mailList,
+                                    SID = sidString
+                                });
+                            }
                         }
                     }
                 }
-                users = users.OrderBy(i => i.DisplayName).ToList();
+                var sortedUsers = users.OrderBy(i => i.DisplayName).ToList();
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    UserListView.ItemsSource = users;
+                    UserListView.ItemsSource = sortedUsers;
                     LoadingScreen.Visibility = Visibility.Hidden;
                     UserListView.Visibility = Visibility.Visible;
                 });
@@ -100,9 +111,9 @@ namespace ADMail.Pages
         {
             var mailList = new List<MailList>();
 
-            for (var i = 0; i < proxyAddrString.Count; i++)
+            foreach (var t in proxyAddrString)
             {
-                var value = proxyAddrString[i]!.ToString();
+                var value = t!.ToString();
 
                 if (value!.StartsWith("SMTP:"))
                 {
@@ -121,7 +132,7 @@ namespace ADMail.Pages
                     });
                 }
             }
-            
+
             return mailList;
         }
 
@@ -140,16 +151,7 @@ namespace ADMail.Pages
             UserListView.ItemsSource = filteredUsers;
         }
 
-        private static bool ContainsAny(string s, IReadOnlyCollection<string>? substrings)
-        {
-            if (string.IsNullOrEmpty(s) || substrings == null)
-                return false;
-
-            return substrings.Any(substring => s.Contains(substring, StringComparison.CurrentCultureIgnoreCase));
-        }
-
         #endregion
-
 
         private void UserListView_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -158,8 +160,25 @@ namespace ADMail.Pages
                 var selectedItem = UserListView.SelectedItems[0];
                 var selectedUser = (User)selectedItem!;
                 var editor = new Editor(selectedUser);
+
+                // Subscribe to the event
+                editor.UserUpdated += Editor_UserUpdated;
+
                 ContentPage.ContentWindow!.FrameWindow.Content = editor;
             }
+        }
+
+        private void Editor_UserUpdated(object? sender, User? e)
+        {
+            if (e == null) return;
+
+            var existingUser = users!.FirstOrDefault(u => u.SAMAccountName == e.SAMAccountName);
+            if (existingUser != null)
+            {
+                users = new ConcurrentBag<User>(users.Except(new[] { existingUser }).Append(e));
+            }
+            UserListView.ItemsSource = users.OrderBy(i => i.DisplayName).ToList();
+            LoadUsers();
         }
     }
 }

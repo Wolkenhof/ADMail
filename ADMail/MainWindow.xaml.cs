@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
 using ADMail.Common;
 using ADMail.Pages;
 
@@ -34,17 +33,17 @@ namespace ADMail
         {
             var a = new List<UserList.MailList>()
             {
-                new UserList.MailList()
+                new()
                 {
                     isPrimary = true,
                     Mail = "primary@example.com"
                 },
-                new UserList.MailList()
+                new()
                 {
                     isPrimary = false,
                     Mail = "secondary@example.com"
                 },
-                new UserList.MailList()
+                new()
                 {
                     isPrimary = false,
                     Mail = "test@example.com"

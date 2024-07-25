@@ -84,7 +84,7 @@
                 </Viewbox>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="2" Margin="0,15,0,0">
                 <ui:Card Height="135">
                     <StackPanel>
                         <Label x:Name="LabelTitle"

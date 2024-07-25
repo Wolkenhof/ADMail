@@ -6,68 +6,74 @@
               xmlns:local="clr-namespace:ADMail.Pages"
               xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
               mc:Ignorable="d"
-              Height="450" Width="800">
+              Height="450" Width="800"
+              Loaded="Editor_OnLoaded">
     <StackPanel Margin="10,-40">
-        <ui:Button Content="Zurück" Icon="{ui:SymbolIcon ArrowLeft24}" Margin="0,0,0,10" Click="Back_OnClicked"/>
         <ui:Card>
             <StackPanel Orientation="Horizontal">
                 <Image Source="pack://application:,,,/Assets/user.png" Width="60"/>
                 <StackPanel VerticalAlignment="Center" Margin="15,0,0,0">
-                    <ui:TextBlock x:Name="DisplayNameLabel" FontTypography="Title" Text="Max Mustermann"/>
-                    <ui:TextBlock x:Name="UsernameLabel" FontTypography="Subtitle" Text="max.mustermann"/>
+                    <ui:TextBlock x:Name="DisplayNameLabel" FontTypography="Subtitle" Text="Max Mustermann"/>
+                    <ui:TextBlock x:Name="UsernameLabel" FontTypography="Body" Text="max.mustermann"/>
                 </StackPanel>
             </StackPanel>
         </ui:Card>
 
         <ui:Card>
             <StackPanel>
-                <ListBox Height="280"
-                             ItemsSource="{Binding RadioList}"
-                             x:Name="RadioListBox"
+                <ui:TextBox Icon="{ui:SymbolIcon Mail24}"
+                            PlaceholderText="Primäre E-Mail-Adresse"
+                            x:Name="PrimaryEmail"/>
+
+                <ui:Card Margin="0,5">
+                    <ui:ListView Height="245"
+                             ItemsSource="{Binding MailList}"
+                             x:Name="MailListBox"
                              Margin="0,0,0,5">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock FontSize="13"
-                                                   FontWeight="Medium"
-                                                   Text="{Binding Name}" />
-                                <TextBlock x:Name="Address"
-                                                   Text="{Binding Address}"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                   FontSize="13"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <ui:MenuItem Header="E-Mail Adresse entfernen" Click="MenuItem_OnClick"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock x:Name="Address"
+                                               Padding="5"
+                                               Text="{Binding Mail}"
+                                               FontSize="13"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ui:ListView>
+                </ui:Card>
+                
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="85"/>
+                        <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
 
                     <ui:TextBox Grid.Column="0"
-                                        PlaceholderText="Radio Name"
-                                        x:Name="NameTextBox"/>
-                    <ui:TextBox Grid.Column="1" 
-                                        PlaceholderText="Address" 
-                                        x:Name="AddressTextBox"
-                                        Margin="5,0,0,0"/>
+                                        PlaceholderText="Weitere E-Mail-Adressen"
+                                        x:Name="SecondMailTextBox"
+                                        KeyDown="SecondMailTextBox_OnKeyDown"/>
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ui:Button Icon="Add20"
-                                           ToolTip="Add this Stream"
-                                           Height="35"
-                                           Margin="0,0,5,0"
-                                           x:Name="AddRadioBtn"/>
-                        <ui:Button Icon="Delete16"
-                                           ToolTip="Remove this Stream"
-                                           Height="35"
-                                           x:Name="RemoveRadioBtn"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ui:Button Icon="{ui:SymbolIcon Add20}"
+                                   ToolTip="Adresse hinzufügen"
+                                   Click="AddAddressBtn_OnClick"
+                                   Height="35"
+                                   Margin="0,0,5,0"
+                                   x:Name="AddAddressBtn"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </ui:Card>
 
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+            <ui:Button Content="Änderungen verwerfen" Icon="{ui:SymbolIcon ArrowLeft24}" Margin="0,0,0,0" Click="Back_OnClicked"/>
+            <ui:Button Content="Speichern" Icon="{ui:SymbolIcon Save24}" Margin="10,0,0,00" Click="Save_OnClicked"/>
+        </StackPanel>
     </StackPanel>
 </UserControl>
