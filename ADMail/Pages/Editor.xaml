@@ -32,7 +32,8 @@
                              Margin="0,0,0,5">
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <ui:MenuItem Header="E-Mail Adresse entfernen" Click="MenuItem_OnClick"/>
+                                <ui:MenuItem Header="E-Mail-Adresse entfernen" Click="RemoveEMail_OnClick"/>
+                                <ui:MenuItem Header="Als Primäre E-Mail-Adresse festlegen" Click="PrimaryEMail_OnClick"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                         <ListView.ItemTemplate>

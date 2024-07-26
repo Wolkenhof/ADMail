@@ -43,7 +43,7 @@ namespace ADMail.Pages
             ContentPage.ContentWindow!.FrameWindow.Content = ContentPage.UserListPage;
         }
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        private void RemoveEMail_OnClick(object sender, RoutedEventArgs e)
         {
             if (MailListBox.SelectedItem is MailList selectedItem)
             {
@@ -51,6 +51,25 @@ namespace ADMail.Pages
                 if (mailToRemove == null) return;
 
                 _mails = _mails.Except(new[] { mailToRemove }).ToList();
+                MailListBox.ItemsSource = _mails.ToList();
+            }
+        }
+
+        private void PrimaryEMail_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MailListBox.SelectedItem is MailList selectedItem)
+            {
+                var mailToRemove = _mails.FirstOrDefault(u => u.Mail == selectedItem.Mail);
+                if (mailToRemove == null) return;
+
+                _mails = _mails.Except([mailToRemove]).ToList();
+                var isValid = IsValidEmail(PrimaryEmail.Text);
+                if (isValid)
+                {
+                    _mails.Add(new MailList { Mail = PrimaryEmail.Text });
+                }
+                PrimaryEmail.Text = mailToRemove.Mail;
+
                 MailListBox.ItemsSource = _mails.ToList();
             }
         }
