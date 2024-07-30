@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using ADMail.Common;
@@ -72,6 +73,18 @@ namespace ADMail.Pages
 
                 MailListBox.ItemsSource = _mails.ToList();
             }
+        }
+
+        private void MoveToList_OnClick(object sender, RoutedEventArgs e)
+        {
+            var isValid = IsValidEmail(PrimaryEmail.Text);
+            if (isValid)
+            {
+                _mails.Add(new MailList { Mail = PrimaryEmail.Text });
+            }
+            PrimaryEmail.Text = "";
+
+            MailListBox.ItemsSource = _mails.ToList();
         }
 
         private void AddAddressBtn_OnClick(object sender, RoutedEventArgs e) => AddEmail();

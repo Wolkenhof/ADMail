@@ -21,9 +21,20 @@
 
         <ui:Card>
             <StackPanel>
-                <ui:TextBox Icon="{ui:SymbolIcon Mail24}"
-                            PlaceholderText="Primäre E-Mail-Adresse"
-                            x:Name="PrimaryEmail"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBox Icon="{ui:SymbolIcon Mail24}"
+                        PlaceholderText="Primäre E-Mail-Adresse"
+                        x:Name="PrimaryEmail"
+                                Grid.Column="0"/>
+                    <ui:Button Icon="{ui:SymbolIcon ArrowDown24}"
+                               ToolTip="Zur Liste verschieben"
+                               Grid.Column="1" Height="35" Margin="5,0,0,0"
+                               Click="MoveToList_OnClick"/>
+                </Grid>
 
                 <ui:Card Margin="0,5">
                     <ui:ListView Height="245"
@@ -58,7 +69,8 @@
                     <ui:TextBox Grid.Column="0"
                                         PlaceholderText="Weitere E-Mail-Adressen"
                                         x:Name="SecondMailTextBox"
-                                        KeyDown="SecondMailTextBox_OnKeyDown"/>
+                                        KeyDown="SecondMailTextBox_OnKeyDown"
+                                        Icon="{ui:SymbolIcon MailAdd16}"/>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                         <ui:Button Icon="{ui:SymbolIcon Add20}"
