@@ -94,7 +94,7 @@ namespace ADMail.Pages
             var isValid = IsValidEmail(SecondMailTextBox.Text);
             if (!isValid)
             {
-                const string errorMessage = "Die eingegebene E-Mail Adresse ist ungültig!";
+                var errorMessage = Common.LocalizationManager.LocalizeValue("InvalidEmail");
                 var messageUi = new MessageUi("ADMail", errorMessage, "OK");
                 messageUi.ShowDialog();
                 return;
@@ -133,7 +133,7 @@ namespace ADMail.Pages
             var isValid = IsValidEmail(PrimaryEmail.Text);
             if (!isValid)
             {
-                const string errorMessage = "Die eingegebene Primäre-E-Mail Adresse ist ungültig!";
+                var errorMessage = Common.LocalizationManager.LocalizeValue("InvalidPrimaryEmail");
                 var messageUi = new MessageUi("ADMail", errorMessage, "OK");
                 messageUi.ShowDialog();
                 return;
@@ -148,7 +148,7 @@ namespace ADMail.Pages
             });
 
             // try to write
-            var status = ADManager.UpdateProxyAddresses(UsernameLabel.Text, mailList);
+            var status = AdManager.UpdateProxyAddresses(UsernameLabel.Text, mailList);
             if (status)
             {
                 UserUpdated?.Invoke(this, User!);

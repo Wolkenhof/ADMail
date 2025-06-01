@@ -18,6 +18,7 @@ namespace ADMail.Pages
             public string DisplayName { get; set; }
             public string Picture { get; set; }
             public string SAMAccountName { get; set; }
+            public string Description { get; set; }
             public string SID { get; set; }
             public IEnumerable<MailList> MailList { get; set; }
         }
@@ -46,9 +47,10 @@ namespace ADMail.Pages
             UserListView.Visibility = Visibility.Hidden;
             await Task.Run(() =>
             {
-                var deviceDomain = Environment.UserDomainName;
-                using (var context = new PrincipalContext(ContextType.Domain, deviceDomain))
+                try
                 {
+                    var deviceDomain = Environment.UserDomainName;
+                    using var context = new PrincipalContext(ContextType.Domain, deviceDomain);
                     using var searcher = new PrincipalSearcher(new UserPrincipal(context));
                     var userPrincipal = new UserPrincipal(context)
                     {
@@ -59,8 +61,7 @@ namespace ADMail.Pages
 
                     foreach (var result in allUsers)
                     {
-                        var de = result.GetUnderlyingObject() as DirectoryEntry;
-                        if (de == null) continue;
+                        if (result.GetUnderlyingObject() is not DirectoryEntry de) continue;
 
                         // Getting proxyAddresses
                         var proxyAddrString = de.Properties["proxyAddresses"];
@@ -70,6 +71,7 @@ namespace ADMail.Pages
                         if (string.IsNullOrEmpty(displayName))
                             displayName = $"{de.Properties["sAMAccountName"].Value}";
 
+                        var description = $"{de.Properties["description"].Value}";
                         var samAccountName = $"{de.Properties["sAMAccountName"].Value}";
                         var sidBytes = (byte[])de.Properties["objectSid"].Value!;
                         var sid = new SecurityIdentifier(sidBytes, 0);
@@ -87,6 +89,7 @@ namespace ADMail.Pages
                                     Name = $"{de.Properties["givenName"].Value}",
                                     LastName = $"{de.Properties["sn"].Value}",
                                     DisplayName = displayName,
+                                    Description = description,
                                     Picture = "pack://application:,,,/assets/user.png",
                                     SAMAccountName = samAccountName,
                                     MailList = mailList,
@@ -96,6 +99,18 @@ namespace ADMail.Pages
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        var errorMessage = Common.LocalizationManager.LocalizeValue("Error", ex.Message);
+                        var messageUi = new MessageUi("ADMail", errorMessage, "OK");
+                        messageUi.ShowDialog();
+                    });
+
+                    return;
+                }
+                
                 var sortedUsers = users.OrderBy(i => i.DisplayName).ToList();
 
                 Application.Current.Dispatcher.Invoke(() =>

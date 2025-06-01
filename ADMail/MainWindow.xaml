@@ -38,6 +38,11 @@
                         <ui:SymbolIcon Symbol="QuestionCircle24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem>
+                    <ui:Card x:Name="DebugString" Padding="5" Margin="-6">
+                        <TextBlock x:Name="Mode"/>
+                    </ui:Card>
+                </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
 
@@ -71,14 +76,14 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <ui:Button Icon="{ui:SymbolIcon ShieldDismiss24}"
                                Appearance="Danger"
-                               Content="Break Debugger"
+                               Content="{DynamicResource BreakDebugger}"
                                Margin="0,0,5,0"
                                Click="Debugger_OnClick"
                                x:Name="DebuggerBtn"
                                Visibility="Collapsed"/>
                     <ui:Button Icon="{ui:SymbolIcon ShieldDismiss24}"
                                Appearance="Danger"
-                               Content="Test AD Write"
+                               Content="{DynamicResource TestADWrite}"
                                Margin="0,0,5,0"
                                Click="TestWriteBtn_OnClick"
                                x:Name="TestWriteBtn"

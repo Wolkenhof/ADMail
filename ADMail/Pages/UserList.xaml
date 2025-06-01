@@ -10,7 +10,7 @@
 
     <StackPanel Margin="6,0">
         <ui:Card>
-            <ui:AutoSuggestBox Icon="{ui:SymbolIcon Search32}" TextChanged="SearchBox_OnTextChanged" PlaceholderText="Suchen" x:Name="SearchBox"/>
+            <ui:AutoSuggestBox Icon="{ui:SymbolIcon Search32}" TextChanged="SearchBox_OnTextChanged" PlaceholderText="{DynamicResource Search}" x:Name="SearchBox"/>
         </ui:Card>
 
         <ui:Card Margin="0,5,0,0">
@@ -33,14 +33,17 @@
 
                                 <Image Grid.Column="0" Source="{Binding Picture}" Height="40"/>
                                 <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="15"/>
-                                <TextBlock Grid.Column="2" Text="{Binding SAMAccountName}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
+                                <StackPanel Grid.Column="2"  Orientation="Vertical">
+                                    <TextBlock Text="{Binding Description}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
+                                    <TextBlock Text="{Binding SAMAccountName}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" FontSize="13"/>
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ui:ListView>
                 <StackPanel VerticalAlignment="Center" x:Name="LoadingScreen">
                     <ui:ProgressRing Visibility="Visible" IsIndeterminate="True" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                    <ui:TextBlock Text="Lade AD Benutzer ..." FontTypography="Subtitle" HorizontalAlignment="Center"/>
+                    <ui:TextBlock Text="{DynamicResource LoadUsers}" FontTypography="Subtitle" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </ui:Card>

@@ -27,12 +27,12 @@
                         <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
                     <ui:TextBox Icon="{ui:SymbolIcon Mail24}"
-                        PlaceholderText="Primäre E-Mail-Adresse"
+                        PlaceholderText="{DynamicResource PrimaryEmail}"
                         x:Name="PrimaryEmail"
                                 Grid.Column="0"/>
                     <ui:Button Icon="{ui:SymbolIcon ArrowDown24}"
-                               ToolTip="Zur Liste verschieben"
-                               Grid.Column="1" Height="35" Margin="5,0,0,0"
+                               ToolTip="{DynamicResource MoveToList}"
+                               Grid.Column="1" Height="35" Margin="12,0,0,0"
                                Click="MoveToList_OnClick"/>
                 </Grid>
 
@@ -43,8 +43,8 @@
                              Margin="0,0,0,5">
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <ui:MenuItem Header="E-Mail-Adresse entfernen" Click="RemoveEMail_OnClick"/>
-                                <ui:MenuItem Header="Als Primäre E-Mail-Adresse festlegen" Click="PrimaryEMail_OnClick"/>
+                                <ui:MenuItem Header="{DynamicResource RemoveEmail}" Click="RemoveEMail_OnClick"/>
+                                <ui:MenuItem Header="{DynamicResource SetAsPrimaryEmail}" Click="PrimaryEMail_OnClick"/>
                             </ContextMenu>
                         </ListView.ContextMenu>
                         <ListView.ItemTemplate>
@@ -67,17 +67,17 @@
                     </Grid.ColumnDefinitions>
 
                     <ui:TextBox Grid.Column="0"
-                                        PlaceholderText="Weitere E-Mail-Adressen"
+                                        PlaceholderText="{DynamicResource MoreEmail}"
                                         x:Name="SecondMailTextBox"
                                         KeyDown="SecondMailTextBox_OnKeyDown"
                                         Icon="{ui:SymbolIcon MailAdd16}"/>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                         <ui:Button Icon="{ui:SymbolIcon Add20}"
-                                   ToolTip="Adresse hinzufügen"
+                                   ToolTip="{DynamicResource AddAddress}"
                                    Click="AddAddressBtn_OnClick"
                                    Height="35"
-                                   Margin="0,0,5,0"
+                                   Margin="0,0,0,0"
                                    x:Name="AddAddressBtn"/>
                     </StackPanel>
                 </Grid>
@@ -85,8 +85,8 @@
         </ui:Card>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
-            <ui:Button Content="Änderungen verwerfen" Icon="{ui:SymbolIcon ArrowLeft24}" Margin="0,0,0,0" Click="Back_OnClicked"/>
-            <ui:Button Content="Speichern" Icon="{ui:SymbolIcon Save24}" Margin="10,0,0,00" Click="Save_OnClicked"/>
+            <ui:Button Content="{DynamicResource Discard}" Icon="{ui:SymbolIcon ArrowLeft24}" Margin="0,0,0,0" Click="Back_OnClicked"/>
+            <ui:Button Content="{DynamicResource Save}" Icon="{ui:SymbolIcon Save24}" Margin="10,0,0,00" Click="Save_OnClicked"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -89,7 +89,7 @@
                     <StackPanel>
                         <Label x:Name="LabelTitle"
                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Content="Über diese App"
+                               Content="{DynamicResource About}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                FontSize="15"
@@ -104,11 +104,7 @@
                                Margin="0,-5,0,0"
                                FontFamily="Segoe UI Variable Display"/>
 
-                        <TextBlock x:Name="LicenseText" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Top" FontSize="15" TextWrapping="WrapWithOverflow" FontFamily="Segoe UI Variable Display" Height="100">
-                            Dieses Programm ist freie Software: Sie können es weitergeben und/oder verändern
-                            unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, mit entweder Version 3 der Lizenz oder
-                            (nach Ihrer Wahl) jede spätere Version.
-                        </TextBlock>
+                        <TextBlock x:Name="LicenseText" Foreground="{DynamicResource TextFillColorTertiaryBrush}" VerticalAlignment="Top" FontSize="15" TextWrapping="WrapWithOverflow" FontFamily="Segoe UI Variable Display" Height="100" Text="{DynamicResource GNULicense}" />
                     </StackPanel>
                 </ui:Card>
             </Grid>
@@ -125,14 +121,14 @@
                                 <ui:Image Source="pack://application:,,,/bucker v3.ico" Width="30" Margin="0,0,10,0"/>
                                 <StackPanel>
                                     <Label Foreground="{DynamicResource TextFillColorPrimaryBrush}" Content="ADMail" FontSize="15" Margin="0,0,0,-5"/>
-                                    <Label x:Name="ValueCopyright" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Content="Copyright © 2024 wolkenhof GmbH. Alle Rechte vorbehalten." FontSize="15" FontFamily="Segoe UI Variable Display"/>
+                                    <Label x:Name="ValueCopyright" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Content="Copyright © 2025 wolkenhof GmbH." FontSize="15" FontFamily="Segoe UI Variable Display"/>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <ui:Button Margin="0,0,8,0" 
-                                               Content="Homepage"
+                                               Content="{DynamicResource Homepage}"
                                                Click="Homepage_OnClick"/>
-                                <ui:Button Content="Quellcode"
+                                <ui:Button Content="{DynamicResource SourceCode}"
                                                Click="SourceCode_OnClick"/>
                             </StackPanel>
                         </Grid>

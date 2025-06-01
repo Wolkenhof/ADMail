@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using System.Security.Principal;
 using System.Windows;
 using ADMail.Common;
 using ADMail.Pages;
@@ -17,6 +18,8 @@ namespace ADMail
         {
             InitializeComponent();
             VersionLbl.Content = $"Version {Assembly.GetExecutingAssembly().GetName().Version!}";
+            Mode.Text = IsAdministrator() ? "Administrator" : "User (Read Only)";
+
             _userList = new UserList();
 #if DEBUG
             DebuggerBtn.Visibility = Visibility.Visible;
@@ -49,12 +52,19 @@ namespace ADMail
                     Mail = "test@example.com"
                 }
             };
-            ADManager.UpdateProxyAddresses("test123", a);
+            AdManager.UpdateProxyAddresses("test123", a);
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             RootNavigation.Navigate(typeof(Pages.ContentPage));
+        }
+
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

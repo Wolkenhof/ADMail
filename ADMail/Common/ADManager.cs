@@ -4,7 +4,7 @@ using ADMail.Pages;
 
 namespace ADMail.Common
 {
-    public class ADManager
+    public class AdManager
     {
         public static bool UpdateProxyAddresses(string samAccountName, List<UserList.MailList> newProxyAddresses)
         {

@@ -7,10 +7,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<Authors>Jonas Günner</Authors>
-		<Company>Wolkenhof GmbH</Company>
+		<Company>wolkenhof GmbH</Company>
 		<Description>Configure AD User's Proxyadresses</Description>
-		<Copyright>Copyright © 2024 Wolkenhof GmbH. All rights reserved.</Copyright>
-		<Version>1.0.1.185</Version>
+		<Copyright>Copyright © 2025 wolkenhof GmbH. All rights reserved.</Copyright>
+		<Version>1.0.2.193</Version>
 		<Platforms>AnyCPU</Platforms>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
@@ -27,13 +27,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
-		<PackageReference Include="WPF-UI" Version="3.0.5" />
+	  <Page Remove="Localization\ResourceDictionary.de-DE.xaml" />
+	  <Page Remove="Localization\ResourceDictionary.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.5" />
+		<PackageReference Include="WPF-UI" Version="4.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Resource Include="Assets\user.png" />
 	  <Resource Include="bucker v3.ico" />
+	  <Resource Include="Localization\ResourceDictionary.de-DE.xaml" />
+	  <Resource Include="Localization\ResourceDictionary.xaml" />
 	</ItemGroup>
 
 </Project>

@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <system:String x:Key="BreakDebugger">Breakpoint auslösen</system:String>
+    <system:String x:Key="TestADWrite">Testdaten schreiben</system:String>
+    <system:String x:Key="About">Über diese App</system:String>
+    <system:String x:Key="GNULicense">
+        Dieses Programm ist freie Software: Sie können es weitergeben und/oder verändern
+        unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, mit entweder Version 3 der Lizenz oder
+        (nach Ihrer Wahl) jede spätere Version.
+    </system:String>
+    <system:String x:Key="Homepage">Homepage</system:String>
+    <system:String x:Key="SourceCode">Quellcode</system:String>
+    <system:String x:Key="Error">Fehler: {0}</system:String>
+    <system:String x:Key="PrimaryEmail">Primäre E-Mail-Adresse</system:String>
+    <system:String x:Key="MoveToList">Zur Liste verschieben</system:String>
+    <system:String x:Key="RemoveEmail">E-Mail-Adresse entfernen</system:String>
+    <system:String x:Key="SetAsPrimaryEmail">Als Primäre E-Mail-Adresse festlegen</system:String>
+    <system:String x:Key="MoreEmail">Weitere E-Mail-Adressen</system:String>
+    <system:String x:Key="AddAddress">Adresse hinzufügen</system:String>
+    <system:String x:Key="Discard">Änderungen verwerfen</system:String>
+    <system:String x:Key="Save">Speichern</system:String>
+    <system:String x:Key="LoadUsers">Lade AD Benutzer ...</system:String>
+    <system:String x:Key="Search">Suchen</system:String>
+    <system:String x:Key="InvalidPrimaryEmail">Die eingegebene Primäre-E-Mail Adresse ist ungültig!</system:String>
+    <system:String x:Key="InvalidEmail">Die eingegebene E-Mail Adresse ist ungültig!</system:String>
+
+</ResourceDictionary>
